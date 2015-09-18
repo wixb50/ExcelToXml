@@ -191,6 +191,8 @@ public class Excel {
      * @return
      */
     public boolean docToXmlFile(Document document, String xmlFile) {
+        //删除生成文件名中的中文字符
+        xmlFile = xmlFile.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+)", "");
         try {
             // 排版缩进的格式
             OutputFormat format = OutputFormat.createPrettyPrint();
