@@ -125,11 +125,13 @@ public class Excel {
             List<String> pcdataList = new ArrayList<>();
             for (int y = 0; y < row.getPhysicalNumberOfCells(); y++) {
                 Object object = this.getCellValueObject(0, y);
+                //去除表头字符串中的空格
+                String objectStr = object.toString().replaceAll(" ", "");
                 if (rowString != null)
-                    rowString += "|" + object.toString();
+                    rowString += "|" + objectStr;
                 else
-                    rowString = object.toString();
-                pcdataList.add(object.toString());
+                    rowString = objectStr;
+                pcdataList.add(objectStr);
             }
             //设置行节点
             declList.add(new ElementDecl("row", "(" + rowString + ")*"));
