@@ -98,7 +98,7 @@ public class Excel {
      *
      * @param xmlFile
      * @param sheetNum
-     * @return 1代表成功，0失败，-1超过最大sheet
+     * @return 1代表成功，0失败，-1超过最大sheet,2跳过当前失败的xml
      */
     public int excelToXml(String xmlFile, int sheetNum) {
         if (sheetNum >= workBook.getNumberOfSheets())
@@ -125,6 +125,9 @@ public class Excel {
             List<String> pcdataList = new ArrayList<>();
             for (int y = 0; y < row.getPhysicalNumberOfCells(); y++) {
                 Object object = this.getCellValueObject(0, y);
+                //判断是否有合并单元格，有的话跳过
+                if (object == null)
+                    return 2;
                 //去除表头字符串中的空格
                 String objectStr = object.toString().replaceAll(" ", "");
                 if (rowString != null)
@@ -173,9 +176,14 @@ public class Excel {
      */
     public boolean allSheetToXml(String xmlFile) {
         for (int i = 0; i < workBook.getNumberOfSheets(); i++) {
-            if (excelToXml(xmlFile + "_" + i, i) == 0) {
-                System.out.println("转换出错！");
+            int result = excelToXml(xmlFile + "_" + (i + 1), i);
+            if (result == 0) {
+                System.out.println("转换出错,程序退出！");
                 return false;
+            }
+            if (result == 2) {
+                Util.msgToLog("error.log", xmlFile + "_" + (i + 1) + ".xml" + " 转换出错！");
+                System.out.println(xmlFile + "_" + (i + 1) + ".xml" + " 转换出错！");
             }
         }
         return true;

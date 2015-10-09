@@ -1,6 +1,8 @@
 package com.xie.excelxml;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -23,6 +25,13 @@ public class ExcelToXml {
             System.out.println("************************\n");
             System.out.println("请输入你的选择：\n1.转换一个excel到xml;\n2.转换当前所有excel到xml.\n");
             System.out.println("************************\n");
+
+            //当当前转换时间写入日志
+            Date now = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+            String nowTime = dateFormat.format(now);
+            Util.msgToLog("error.log", "Transform time : " + nowTime);
+
             int choose = scanner.nextInt();
             switch (choose) {
                 case 1:
